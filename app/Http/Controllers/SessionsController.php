@@ -39,4 +39,19 @@ class SessionsController extends Controller
         }
     }
 
+
+    /**
+     *
+     * @User: w
+     * @Date: 2021/3/14
+     * @Time: 下午3:08
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function destroy()
+    {
+        Auth::logout();
+        session()->flash('success', '您已成功退出！');
+        return redirect('login');
+    }
+
 }
