@@ -19,7 +19,7 @@ class SessionsController extends Controller
      *
      * @User: w
      * @Date: 2021/3/14
-     * @Time: 上午9:42
+     * @Time: 下午3:13
      * @param Request $request
      * @return $this|\Illuminate\Http\RedirectResponse
      * @throws \Illuminate\Validation\ValidationException
@@ -30,7 +30,8 @@ class SessionsController extends Controller
             'email' => 'required|email|max:255',
             'password' => 'required'
         ]);
-        if (Auth::attempt($credentials)) {
+
+        if (Auth::attempt($credentials, $request->has('remember'))) {
             session()->flash('success', '欢迎回来！');
             return redirect()->route('users.show', [Auth::user()]);
         } else {
