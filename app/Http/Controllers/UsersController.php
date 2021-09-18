@@ -8,6 +8,18 @@ use Auth;
 
 class UsersController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth', [
+            'except' => ['show', 'create', 'store']
+        ]);
+
+        $this->middleware('guest', [
+            'only' => ['create']
+        ]);
+    }
+
     // 创建用户注册页面
     public function create()
     {
@@ -18,13 +30,15 @@ class UsersController extends Controller
     /**
      * 显示用户数据
      * @User: w
-     * @Date: 2021/9/17
-     * @Time: 下午10:15
+     * @Date: 2021/9/18
+     * @Time: 上午9:57
      * @param User $user
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function show(User $user)
     {
+        $this->authorize('update', $user);
         return view('users.show', compact('user'));
     }
 
@@ -60,12 +74,14 @@ class UsersController extends Controller
      * 编辑页面
      * @User: w
      * @Date: 2021/9/18
-     * @Time: 上午9:18
+     * @Time: 上午9:52
      * @param User $user
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function edit(User $user)
     {
+        $this->authorize('update', $user);
         return view('users.edit', compact('user'));
     }
 
@@ -74,14 +90,16 @@ class UsersController extends Controller
      * 用户更新数据
      * @User: w
      * @Date: 2021/9/18
-     * @Time: 上午9:31
+     * @Time: 上午9:52
      * @param User $user
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Illuminate\Validation\ValidationException
      */
     public function update(User $user, Request $request)
     {
+        $this->authorize('update', $user);
         $this->validate($request, [
             'name' => 'required|max:50',
             'password' => 'nullable|confirmed|min:6'
