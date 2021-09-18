@@ -122,5 +122,22 @@ class UsersController extends Controller
     }
 
 
+    /**
+     * 删除
+     * @User: w
+     * @Date: 2021/9/18
+     * @Time: 上午11:02
+     * @param User $user
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function destroy(User $user)
+    {
+        $this->authorize('destroy', $user);
+        $user->delete();
+        session()->flash('success', '成功删除用户！');
+        return back();
+    }
+
 
 }
